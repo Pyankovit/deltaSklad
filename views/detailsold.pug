@@ -1,0 +1,46 @@
+html
+	head
+		title= 'Delta SKLAD11'
+		style
+			include style.css
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js")
+		script(src='http://code.jquery.com/jquery-1.11.0.min.js')
+	body
+		h1= 'Склад Дельта'
+		form(action='')
+			input(type='date', name='bday', min='2017-10-05')
+			input(type='date', name='bday', max='Date.now()')
+			input(type='submit')
+		canvas#deltas(width='600', height='400')
+		script.
+			$(document).ready(function() {
+			$.get($(location).attr('href'), function(skuList, status) {
+			alert($(location).attr('href'));
+			var q=[];
+			$.get($.('.quant').each(function()
+			{
+			alert($('.quant').text());
+			});
+			var deltaData = {
+			labels : ["January","February","March","April","May","June"],
+			datasets : [
+			{
+			fillColor : "rgba(172,194,132,0.4)",
+			strokeColor : "#ACC26D",
+			pointColor : "#fff",
+			pointStrokeColor : "#9DB86D",
+			data : [203,156,99,251,305,247]
+			}
+			]
+			}
+			var deltas = document.getElementById('deltas').getContext('2d');
+			new Chart(deltas).Line(deltaData);
+			});
+			});
+	table
+		for delta2 in skuList
+			tr
+				td(class='sku')= delta2.sku
+				td(class='quant')= delta2.quantity
+				td(class='price')= delta2.price
+				td(class='time')= delta2.time

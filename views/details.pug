@@ -1,0 +1,110 @@
+html
+	head
+		title= 'Delta SKLAD11'
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+		style
+			include style.css
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js")
+		script(src='http://code.jquery.com/jquery-1.11.0.min.js')
+	body
+		ul.menu1
+			li.menu2
+				a.active(href='/delta') Cклад Дельты
+			li.menu2
+				a(href='#news') News
+			li.menu2
+				a(href='#contact') Contact
+			li.menu2
+				a(href='#about') About
+		h1= 'Склад Дельта'
+		form(action='')
+			input(type='date', name='bday', min='2017-10-05')
+			input(type='date', name='bday', max='Date.now()')
+			input(type='submit')
+		canvas#deltas(width='1000', height='300')
+		canvas#delta2(width='1000', height='300')
+		script.
+			$(document).ready(function() {
+			var strin=!{qList};
+			alert(strin);
+			alert($(location).attr('href'));
+			$('.quant').each(function()
+			{
+			alert($('.quant').text());
+			});
+			var deltaData = {
+			labels : !{timeList},
+			datasets : [
+			{
+			label: "Количество на складе",
+			fillColor : "rgba(255, 238, 0, 0.5)",
+			strokeColor : "rgba(41, 204, 0, 1)",
+			pointColor : "#fff",
+			pointStrokeColor : "rgba(41, 204, 0, 1)",
+			data : !{qList}
+			}],
+			options: {
+			scales: {
+			yAxes: [{
+			type: 'linear',
+			position: 'left',
+			ticks: {
+			beginAtZero: true
+			}
+			}]
+			}
+			}
+			}
+			var deltas = document.getElementById('deltas').getContext('2d');
+			new Chart(deltas).Line(deltaData);
+			var deltaData2 = {
+			labels : !{timeList},
+			datasets : [
+			{
+			label: "Цена прайс",
+			fillColor : "rgba(0, 242, 255, 0.5)",
+			strokeColor : "rgba(4, 0, 255, 0.69)",
+			pointColor : "#fff",
+			pointStrokeColor : "rgba(4, 0, 255, 0.69)",
+			data : !{priceList}
+			}],
+			options: {
+			scales: {
+			yAxes: [{
+			type: 'linear',
+			position: 'left',
+			ticks: {
+			beginAtZero: true
+			}
+			}]
+			}
+			}
+			}
+			var delta2 = document.getElementById('delta2').getContext('2d');
+			new Chart(delta2).Line(deltaData2);
+			});
+	table(class='skutable')
+		tr
+			th="id"
+			th="sku"
+			th="Количество"
+			th="Цена Прайс"
+			th="Дата"
+		for delta2 in skuList
+			tr
+				td(class='id')= delta2.id
+				td(class='sku')= delta2.sku
+				td(class='quant')= delta2.quantity
+				td(class='price')= delta2.price
+				td(class='time')= delta2.time
+	br
+	table(class='skutable')
+		tr
+			th="sku"
+			th="Cреднее Количество"
+			th="Средняя Цена Прайс"
+		for delta2 in skuList
+			tr
+				td(class='sku')= delta2.sku
+				td(class='quant')= delta2.quantity
+				td(class='price')= delta2.price

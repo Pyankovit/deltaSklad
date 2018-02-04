@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+  body
+    nav#main-menu
+    ul.nav-bar
+      li: a(href='/') Home
+      li: a(href='users') Users
+      li: a(href='sklad') Текущий склад
+      li: a(href='test') test
+  table
+    for delta in deltaList
+      tr
+       td=delta.sku
+       td=delta.quantity
+       td=delta.price
+       td=delta.time

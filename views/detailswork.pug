@@ -1,0 +1,66 @@
+html
+	head
+		title= 'Delta SKLAD11'
+		style
+			include style.css
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js")
+		script(src='http://code.jquery.com/jquery-1.11.0.min.js')
+	body
+		h1= 'Склад Дельта'
+		form(action='')
+			input(type='date', name='bday', min='2017-10-05')
+			input(type='date', name='bday', max='Date.now()')
+			input(type='submit')
+		canvas#deltas(width='1000', height='300')
+		script.
+			$(document).ready(function() {
+			var strin=!{qList};
+			alert(strin);
+			alert($(location).attr('href'));
+			$('.quant').each(function()
+			{
+			alert($('.quant').text());
+			});
+			var deltaData = {
+			labels : !{timeList},
+			datasets : [
+			{
+			fillColor : "rgba(172,194,132,0.4)",
+			strokeColor : "rgba(0, 0, 0, 1)",
+			pointColor : "rgba(255, 255, 255, 1)",
+			pointStrokeColor : "rgba(0, 0, 0, 1)",
+			label: 'Количество на складе',
+			yAxisID: 'A',
+			data : !{qList}
+			}
+			],
+			options: {
+			scales: {
+			yAxes: [{
+			id: 'A',
+			type: 'linear',
+			position: 'left',
+			ticks: {
+			beginAtZero:true
+			}
+			}]
+			}
+			}
+			}
+			var deltas = document.getElementById('deltas').getContext('2d');
+			new Chart(deltas).Line(deltaData);
+			});
+	table
+		tr
+			th="id"
+			th="sku"
+			th="Количество"
+			th="Цена Прайс"
+			th="Дата"
+		for delta2 in skuList
+			tr
+				td(class='id')= delta2.id
+				td(class='sku')= delta2.sku
+				td(class='quant')= delta2.quantity
+				td(class='price')= delta2.price
+				td(class='time')= delta2.time
