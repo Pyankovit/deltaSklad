@@ -1,6 +1,7 @@
 html
 	head
 		include layout.pug
+		script(type='text/javascript' src='javascripts/chart.js')
 	body
 		h1= 'Склад Дельта'
 		form(action='')
@@ -12,12 +13,6 @@ html
 		script.
 			$(document).ready(function() {
 			var strin=!{qList};
-			alert(strin);
-			alert($(location).attr('href'));
-			$('.quant').each(function()
-			{
-			alert($('.quant').text());
-			});
 			var deltaData = {
 			labels : !{timeList},
 			datasets : [
@@ -32,7 +27,7 @@ html
 			options: {
 			scales: {
 			yAxes: [{
-			type: 'linear',
+			type: 'bar',
 			position: 'left',
 			ticks: {
 			beginAtZero: true
@@ -40,9 +35,9 @@ html
 			}]
 			}
 			}
-			}
+			};
 			var deltas = document.getElementById('deltas').getContext('2d');
-			new Chart(deltas).Line(deltaData);
+			new Chart(deltas).Bar(deltaData);
 			var deltaData2 = {
 			labels : !{timeList},
 			datasets : [

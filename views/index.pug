@@ -1,7 +1,19 @@
 html
 	head
 		include layout.pug
+		script.
+			$(document).ready(function(){
+			$("#myInput").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+			$("table tr").filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			});
+			});
+			});
 	body
+	.container
+		input#myInput.form-control(type='text', placeholder='ВВедите артикул для поиска')
+		br
 		h1= 'Склад Дельта'
 	table
 		tr

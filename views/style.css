@@ -3,6 +3,13 @@ table, th, td {
     text-align: center
 }
 
+canvas {
+    display: block;
+    max-width: 800px;
+    margin: 60px auto;
+}
+
+
 #deltas, #delta2 {
     float: right;
 }
