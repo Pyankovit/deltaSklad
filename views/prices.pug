@@ -1,0 +1,61 @@
+html
+	head
+		include layout.pug
+		script.
+			$(document).ready(function(){
+			$("#myInput").on("keyup", function() {
+			var value = $(this).val().toLowerCase();
+			$("#myTable tr").filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			});
+			});
+			});
+		script.
+			var bar_ctx = document.getElementById('bar-chart').getContext('2d');
+			purple_orange_gradient.addColorStop(0, 'yellow');
+			purple_orange_gradient.addColorStop(1, 'orange');
+			var bar_chart = new Chart(bar_ctx, {
+			type: 'bar',
+			data: {
+			labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+			datasets: [{
+			label: '# of Votes',
+			data: [12, 19, 3, 8, 14, 5],
+			backgroundColor: purple_orange_gradient,
+			hoverBackgroundColor: purple_orange_gradient,
+			hoverBorderWidth: 3,
+			hoverBorderColor: 'purple'
+			}]
+			},
+			options: {
+			scales: {
+			yAxes: [{
+			ticks: {
+			beginAtZero:true
+			}
+			}]
+			}
+			}
+			});
+		canvas#bar-chart(width='400', height='300')
+	body
+		h1= 'Сравнение цен'
+	.container
+		h2= 'Filterable Table'
+		input#myInput.form-control(type='text', placeholder='Search..')
+		br 
+		table.table.table-bordered.table-striped
+			thead
+				tr
+				th Firstname
+				th Lastname
+				th Email
+			tbody#myTable
+				tr
+				td John
+				td Doe
+				td john@example.com
+				tr
+				td Mary
+				td Moe
+				td mary@mail.com
