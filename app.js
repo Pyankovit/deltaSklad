@@ -196,6 +196,8 @@ app.get('/delta/prices', function (req, res, next) {
     }
     //console.log(delta220list);
     var JSON220=JSON.stringify(delta220list);
+
+    var obj = JSON.parse(fs.readFileSync('file', 'utf8'));
 /*
     var jsonAll=$.extend(JSON220, JSONV);
     fs.writeFile("test.json", jsonAll, function(err) {
