@@ -1,6 +1,8 @@
 html
 	head
 		include layout.pug
+		script
+			include ../public/javascripts/chart.js
 		script.
 			$(document).ready(function(){
 			$("#myInput").on("keyup", function() {
@@ -10,34 +12,6 @@ html
 			});
 			});
 			});
-		script.
-			var bar_ctx = document.getElementById('bar-chart').getContext('2d');
-			purple_orange_gradient.addColorStop(0, 'yellow');
-			purple_orange_gradient.addColorStop(1, 'orange');
-			var bar_chart = new Chart(bar_ctx, {
-			type: 'bar',
-			data: {
-			labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-			datasets: [{
-			label: '# of Votes',
-			data: [12, 19, 3, 8, 14, 5],
-			backgroundColor: purple_orange_gradient,
-			hoverBackgroundColor: purple_orange_gradient,
-			hoverBorderWidth: 3,
-			hoverBorderColor: 'purple'
-			}]
-			},
-			options: {
-			scales: {
-			yAxes: [{
-			ticks: {
-			beginAtZero:true
-			}
-			}]
-			}
-			}
-			});
-		canvas#bar-chart(width='400', height='300')
 	body
 		h1= 'Сравнение цен'
 	.container
