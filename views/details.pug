@@ -1,15 +1,6 @@
 html
 	head
 		include layout.pug
-		script(type='text/javascript' src='javascripts/chart.js')
-	body
-		h1= 'Склад Дельта'
-		form(action='')
-			input(type='date', name='bday', min='2017-10-05')
-			input(type='date', name='bday', max='Date.now()')
-			input(type='submit')
-		canvas#deltas(width='1000', height='300')
-		canvas#delta2(width='1000', height='300')
 		script.
 			$(document).ready(function() {
 			var strin=!{qList};
@@ -64,6 +55,14 @@ html
 			var delta2 = document.getElementById('delta2').getContext('2d');
 			new Chart(delta2).Line(deltaData2);
 			});
+	body
+		h1= 'Склад Дельта'
+		form(action='')
+			input(type='date', name='bday', min='2017-10-05')
+			input(type='date', name='bday', max='Date.now()')
+			input(type='submit')
+		canvas#deltas(width='1000', height='300')
+		canvas#delta2(width='1000', height='300')
 	table(class='skutable')
 		tr
 			th="id"
@@ -79,7 +78,7 @@ html
 				td(class='price')= delta2.price
 				td(class='time')= delta2.time
 	br
-	table(class='skutable')
+	table(class='skutable2')
 		tr
 			th="sku"
 			th="Cреднее Количество"

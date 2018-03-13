@@ -1,8 +1,6 @@
 html
 	head
 		include layout.pug
-		script
-			include ../public/javascripts/chart.js
 		script.
 			$(document).ready(function(){
 			$("#myInput").on("keyup", function() {
@@ -11,10 +9,16 @@ html
 			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 			});
 			});
+		script.
+			$(document).ready(function(){
+			$('#button1').bind('click', function(){
+			alert('Вы нажали на элемент "foo"');
+			});
 			});
 	body
 		h1= 'Сравнение цен'
 	.container
+		button#button1 create new post;
 		h2= 'Filterable Table'
 		input#myInput.form-control(type='text', placeholder='Search..')
 		br 

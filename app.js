@@ -18,6 +18,11 @@ var fs = require('fs');
 var cron = require('node-cron');
 var jsdom = require('jsdom');
 
+
+const { JSDOM } = jsdom;
+const { document } = (new JSDOM('')).window;
+global.document = document;
+
 var app = express();
 
 // view engine setup
@@ -88,7 +93,7 @@ cron.schedule('00 8 * * 1-5', function writeToMySqlDb() {
 });
 
 
-var quantitys = [], prices = [], times = [], ids = [];
+var quantitys = [], prices = [], times = [], ids = [], bigJSON=[];
 var jsonArray = [];
 var sumPrice = 0;
 
@@ -103,121 +108,122 @@ function getMySQLConnection() {
         database: "deltaarhiv"
         // multipleStatements: true
     });
-}
-
-
+};
 
 app.get('/delta/prices', function (req, res, next) {
-
-    /*
-    request('https://eleksun.com.ua/preobrazovateli-chastoty-delta', function (error, response, html) {
-        $ = cheerio.load(html);
-        var itemsSun=$("post-product").length;
-        console.log(itemsSun);    
-    }); 
-
+    var BIGJSON=[];
+        /*
+        request('https://eleksun.com.ua/preobrazovateli-chastoty-delta', function (error, response, html) {
+            $ = cheerio.load(html);
+            var itemsSun=$("post-product").length;
+            console.log(itemsSun);    
+        }); 
     
-    request('https://privod.kiev.ua/index.php?route=product/category&path=73&limit=400', function (error, response, html) {
-        $ = cheerio.load(html);
-        var itemsprivod=$(".product-thumb thumbnail ").length;
-        console.log(itemsprivod);
-        var privodlist=[];
-        var arrp=[];
-        var skup=$("");
-        for(var kp=0; kp<itemsprivod; kp++) {
-            var skup=($(".product-thumb thumbnail > .caption h3 span a").eq(kp).text());
-            var pricep=($(".product-thumb thumbnail > .caption h4 a").eq(kp).text());
-            arrp=pricep.split(" ");
-            pricep=Math.round(arrp[0]);
-            var deltap = {
-                "skup": skup,
-                "pricep": pricep
+        
+        request('https://privod.kiev.ua/index.php?route=product/category&path=73&limit=400', function (error, response, html) {
+            $ = cheerio.load(html);
+            var itemsprivod=$(".product-thumb thumbnail ").length;
+            console.log(itemsprivod);
+            var privodlist=[];
+            var arrp=[];
+            var skup=$("");
+            for(var kp=0; kp<itemsprivod; kp++) {
+                var skup=($(".product-thumb thumbnail > .caption h3 span a").eq(kp).text());
+                var pricep=($(".product-thumb thumbnail > .caption h4 a").eq(kp).text());
+                arrp=pricep.split(" ");
+                pricep=Math.round(arrp[0]);
+                var deltap = {
+                    "skup": skup,
+                    "pricep": pricep
+                }
+                // Add object into array
+                privodlist.push(deltap);
+                console.log(privodlist);
             }
-            // Add object into array
-            privodlist.push(deltap);
-            console.log(privodlist);
-        }
-        var JSONV=JSON.stringify(privodlist);
-        console.log(JSONV);
-    }); 
-
-*/
-    request('https://voltmarket.ua/delta-electronics?alias[0]=tm-delta-electronics&alias[1]=tm-delta-electronics&altname=delta-electronics&field_producer_value=Delta%20Electronics&filter=1', function (error, response, html) {
-        $ = cheerio.load(html);
-        var itemsvolt=$(".caption").length;
-        console.log(itemsvolt);
-        var voltlist=[];
-        var arrv=[];
-        var skuv=$("");
-        for(var kv=0; kv<itemsvolt; kv++) {
-            var skuv=($(".caption h3 span a").eq(kv).text());
-            var pricev=($(".caption .pbg").eq(kv).text());
-            arrv=pricev.split(" ");
-            pricev=arrv[0];
-            var deltav = {
-                "sku": skuv,
-                "pricev": pricev
-            }
-            // Add object into array
-            voltlist.push(deltav);
-            console.log(voltlist);
-        }
-        var JSONV=JSON.stringify(voltlist);
-        console.log(JSONV);
-        return voltlist;
-    }); 
-
-    
-    request('https://220volt.com.ua/preobrazovateli_chastoty_ustr_plavnogo_puska/preobrazovateli-chastoti/delta_electronics/', function (voltlist, error, response, html) {
-        $ = cheerio.load(html);
-        var items=$("b").length;
-        console.log(items);
-        var delta220list=[];
-        for(var k=0; k<items; k++){         
-            //console.log($(".appelat a").eq(k).attr("href"));
-            var sku220=($(".appelat a").eq(k).attr("href"));
-            if (sku220!=undefined) {   
-            var arr220=sku220.split("-");
-            var removeValFromIndex = [0,1,2,3]; 
-            for (var i = removeValFromIndex.length -1; i >= 0; i--){
-                arr220.splice(removeValFromIndex[i],1); 
-            }
-            var array=arr220.join("-").replace("/","").toUpperCase();
-            console.log(array);
-           var price220=($("b").eq(k).attr("rel"));
-            console.log(price220);
-            var delta220 = {
-                "sku": array,
-                "price220": price220
-            }
-            // Add object into array
-            delta220list.push(delta220);
-        }
-    }
-    //console.log(delta220list);
-    var JSON220=JSON.stringify(delta220list);
-
-    var obj = JSON.parse(fs.readFileSync('file', 'utf8'));
-/*
-    var jsonAll=$.extend(JSON220, JSONV);
-    fs.writeFile("test.json", jsonAll, function(err) {
-        if(err) {
-            return console.log(err);
-        }
-    });
-    console.log(JSON220);
-    console.log(jsonAll);
+            var JSONV=JSON.stringify(privodlist);
+            console.log(JSONV);
+        }); 
     */
+    
+        request('https://voltmarket.ua/delta-electronics?alias[0]=tm-delta-electronics&alias[1]=tm-delta-electronics&altname=delta-electronics&field_producer_value=Delta%20Electronics&filter=1', function (error, response, html) {
+            $ = cheerio.load(html);
+            var itemsvolt=$(".caption").length;
+            //console.log(itemsvolt);
+            var voltlist=[];
+            var arrv=[];
+            var skuv=$("");
+            for(var kv=0; kv<itemsvolt; kv++) {
+                var skuv=($(".caption h3 span a").eq(kv).text());
+                var pricev=($(".caption .pbg").eq(kv).text());
+                arrv=pricev.split(" ");
+                pricev=arrv[0];
+                var deltav = {
+                    "sku": skuv,
+                    "pricev": pricev
+                }
+                // Add object into array
+                voltlist.push(deltav);
+               // console.log(voltlist);
+            }
+            var BIGJSON=JSON.stringify(voltlist);    
+            //console.log(JSONV);
+            return BIGJSON;
+            fs.writeFile("test.json", jsonAll, function(err) {
+                if(err) {
+                    return console.log(err);
+                }
+        }); 
+    //console.log(BIGJSON);
+        request('https://220volt.com.ua/preobrazovateli_chastoty_ustr_plavnogo_puska/preobrazovateli-chastoti/delta_electronics/', function (error, response, html) {
+            $ = cheerio.load(html);
+            var items=$("b").length;
+            //console.log(items);
+            var delta220list=[];
+            for(var k=0; k<items; k++){         
+                //console.log($(".appelat a").eq(k).attr("href"));
+                var sku220=($(".appelat a").eq(k).attr("href"));
+                if (sku220!=undefined) {   
+                var arr220=sku220.split("-");
+                var removeValFromIndex = [0,1,2,3]; 
+                for (var i = removeValFromIndex.length -1; i >= 0; i--){
+                    arr220.splice(removeValFromIndex[i],1); 
+                }
+                var array=arr220.join("-").replace("/","").toUpperCase();
+                //console.log(array);
+               var price220=($("b").eq(k).attr("rel"));
+                //console.log(price220);
+                var delta220 = {
+                    "sku": array,
+                    "price220": price220
+                }
+                // Add object into array
+                delta220list.push(delta220);
+            }
+        }
+        //console.log(delta220list);
+        var JSON220=JSON.stringify(delta220list);
+       // console.log(JSON220);
+        return JSON220;
+    });
+    
+    }); 
+    
+    
+    filePath = path.join(__dirname, 'test.json');
+
+fs.readFile(filePath, {encoding: 'utf-8'}, function(response,err,data){
+    if (!err) {
+        console.log('received data: ' + data);
+        response.writeHead(200, {'Content-Type': 'application/json'});
+        response.write(data);
+        response.end();
+    } else {
+        console.log(err);
+    }
 });
-
-function priceswrite(JSON220, JSONV){
-    var JSONV=JSON.stringify(voltlist);
-    console.log(JSONV);
-}    
-
-
-    res.render("prices.pug", {prices : "delta220list"});
-});
+    
+        res.render("prices.pug");
+    }); 
 
 
 
